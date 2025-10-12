@@ -10,8 +10,9 @@ interface ContextShape {
   isLoading: boolean;
   signup: (data: Partial<User>) => Promise<ApiResult>;
   verify: (emailOrUsername: string, otp?: string) => Promise<ApiResult>;
-  login: (identifier: string, password: string) => Promise<ApiResult>;
+  login: (emailOrUsername: string, password: string) => Promise<ApiResult>;
   refreshSession: () => Promise<ApiResult>;
+  resetPassword: (emailOrUsername: string, otp?: string, newPassword?: string) => Promise<ApiResult>;
   logout: () => void;
 }
 
@@ -64,8 +65,8 @@ export function MernAccessProvider({ children, config }: { children: React.React
     return res;
   }
 
-  async function login(identifier: string, password: string) {
-    const res = await mernAccessService.login(identifier, password);
+  async function login(emailOrUsername: string, password: string) {
+    const res = await mernAccessService.login(emailOrUsername, password);
     if (res.success && res.data.accessToken && res.data.user) {
       localStorage.setItem(storageKey, res.data.accessToken);
       setUser(res.data.user);
@@ -88,6 +89,15 @@ export function MernAccessProvider({ children, config }: { children: React.React
     return res;
   }
 
+  async function resetPassword(emailOrUsername: string, otp?: string, newPassword?: string) {
+    const res = await mernAccessService.reset(emailOrUsername, otp, newPassword);
+    if (res.success) {
+      setIsAuthenticated(true);
+      setUser(null);
+    }
+    return res;    
+  }
+
   function logout() {
     const uname = user?.username;
     if (uname) mernAccessService.logout(uname);
@@ -98,7 +108,8 @@ export function MernAccessProvider({ children, config }: { children: React.React
 
   const value = useMemo<ContextShape>(() => ({
     user, isAuthenticated, isLoading,
-    signup, verify, login, refreshSession, logout
+    signup, verify, login, refreshSession,
+    resetPassword, logout
   }), [user, isAuthenticated, isLoading]);
 
   return <Ctx.Provider value={value}>{children}</Ctx.Provider>;

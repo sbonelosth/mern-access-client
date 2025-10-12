@@ -1,7 +1,7 @@
 {
   "name": "mern-access-client",
-  "version": "0.1.0",
-  "description": "Tiny React client for mern-access backend (signup/verify/login/access/logout).",
+  "version": "1.0.0",
+  "description": "Tiny React client for mern-access backend.",
   "main": "dist/index.js",
   "module": "dist/index.js",
   "types": "dist/index.d.ts",

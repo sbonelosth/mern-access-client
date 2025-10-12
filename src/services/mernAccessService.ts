@@ -35,12 +35,15 @@ export const mernAccessService = {
     request("/signup", { method: "POST", body: JSON.stringify(data) }),
 
   verify: (emailOrUsername: string, otp?: string) =>
-    request("/verify", { method: "POST", body: JSON.stringify({ email: emailOrUsername, otp }) }),
+    request("/verify", { method: "POST", body: JSON.stringify({ id: emailOrUsername, otp }) }),
 
-  login: (id: string, password: string) =>
-    request("/login", { method: "POST", body: JSON.stringify({ id, password }) }),
+  login: (emailOrUsername: string, password: string) =>
+    request("/login", { method: "POST", body: JSON.stringify({ id: emailOrUsername, password }) }),
 
   access: () => request("/access", { method: "POST" }),
+
+  reset: (emailOrUsername: string, otp?: string, newPassword?: string) => 
+    request("/reset-password", { method: "POST", body: JSON.stringify({ id: emailOrUsername, otp, newPassword }) }),
 
   logout: (username: string) =>
     request("/logout", { method: "POST", body: JSON.stringify({ username }) }),
