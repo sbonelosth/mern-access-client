@@ -8,6 +8,7 @@ export interface User {
   otpExpiry?: string;
   createdAt?: string;
   updatedAt?: string;
+  [key: string]: any;
 }
 
 export interface ApiSuccess<T=any> {
