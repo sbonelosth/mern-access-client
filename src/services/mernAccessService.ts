@@ -1,6 +1,6 @@
 
 import { getConfig } from "../config";
-import type { ApiResult, AuthResponse } from "../types";
+import type { ApiResult, AuthResponse, User } from "../types";
 
 async function jsonOrEmpty(res: Response) {
   try { return await res.json(); } catch { return {}; }
@@ -31,7 +31,7 @@ async function request(path: string, init: RequestInit = {}): Promise<ApiResult<
 }
 
 export const mernAccessService = {
-  signup: (data: Partial<{ email: string; username: string; password: string; role: string; }>) =>
+  signup: (data: Partial<User>) =>
     request("/signup", { method: "POST", body: JSON.stringify(data) }),
 
   verify: (emailOrUsername: string, otp?: string) =>
